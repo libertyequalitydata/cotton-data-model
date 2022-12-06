@@ -1,0 +1,3304 @@
+"""Root Query"""
+type Query {
+  """A Single Tiff"""
+  tiff(id: Int): Tiff
+
+  """A Single iCalendar Object"""
+  iCalendar(id: Int): iCalendar
+
+  """A Single iCalendar Object"""
+  contact(id: Int): contact
+
+  """A Single Prifina User"""
+  individual(id: Int): individual
+
+  """A Single Prifina Project"""
+  project(id: Int): prifinaProject
+}
+
+"""This represents the TIFF metadata of a media file"""
+type Tiff {
+  id: Int!
+
+  """
+  The number of columns of image data, equal to the number of pixels per row. In JPEG compressed data, this tag shall not be used because a JPEG marker is used instead of it.
+  """
+  ImageWidth: Int
+
+  """
+  The number of rows of image data. In JPEG compressed data, this tag shall not be used because a JPEG marker is used instead of it.
+  """
+  ImageLength: Int
+
+  """
+  The number of bits per image component. In this standard each component of the image is 8 bits, so the value for this tag is 8. See also SamplesPerPixel. In JPEG compressed data, this tag shall not be used because a JPEG marker is used instead of it.
+  """
+  BitsPerSample: [Int]
+
+  """
+  The compression scheme used for the image data. When a primary image is JPEG compressed, this designation is not necessary. So, this tag shall not be recorded. When thumbnails use JPEG compression, this tag value is set to 6.
+  """
+  Compression: Compression
+
+  """
+  The pixel composition. In JPEG compressed data, this tag shall not be used because a JPEG marker is used instead of it.
+  """
+  PhotometricInterpretation: PhotometricInterpretation
+
+  """The image orientation viewed in terms of rows and columns."""
+  Orientation: Orientation
+
+  """
+  The number of components per pixel. Since this standard applies to RGB and YCbCr images, the value set for this tag is 3. In JPEG compressed data, this tag shall not be used because a JPEG marker is used instead of it.
+  """
+  SamplesPerPixel: Int
+
+  """
+  Indicates whether pixel components are recorded in chunky or planar format. In JPEG compressed data, this tag shall not be used because a JPEG marker is used instead of it. If this field does not exist, the TIFF default of 1 (chunky) is assumed.
+  """
+  PlanarConfiguration: PlanarConfiguration
+
+  """
+  The sampling ratio of chrominance components in relation to the luminance component. In JPEG compressed data a JPEG marker is used instead of this tag. So, this tag shall not be recorded
+  """
+  YCbCrSubSampling: YCbCrSubSampling
+
+  """
+  The position of chrominance components in relation to the luminance component. This field is designated only for JPEG compressed data or uncompressed YCbCr data. The TIFF default is 1 (centered); but when Y:Cb:Cr = 4:2:2 it is recommended in this standard that 2 (co-sited) be used to record data, in order to improve the image quality when viewed on TV systems. When this field does not exist, the reader shall assume the TIFF default. In the case of Y:Cb:Cr = 4:2:0, the TIFF default (centered) is recommended. If the Exif/DCF reader does not have the capability of supporting both kinds of YCbCrPositioning, it shall follow the TIFF default regardless of the value in this field. It is preferable that readers can support both centered and co-sited positioning
+  """
+  YCbCrPositioning: YCbCrPositioning
+
+  """
+  The number of pixels per ResolutionUnit in the ImageWidth direction. When the image resolution is unknown, 72 [dpi] shall be designated
+  """
+  XResolution: Float
+
+  """
+  The number of pixels per ResolutionUnit in the ImageLength direction. The same value as XResolution shall be designated
+  """
+  YResolution: Float
+
+  """"""
+  ResolutionUnit: ResolutionUnit
+
+  """
+  For each strip, the byte offset of that strip. It is recommended that this be selected so the number of strip bytes does not exceed 64 KBytes.In the case of JPEG compressed data, this designation is not necessary,. So, this tag shall not be recorded. See also RowsPerStrip and StripByteCounts
+  """
+  StripOffsets: [Int]
+
+  """
+  The number of rows per strip. This is the number of rows in the image of one strip when an image is divided into strips.In the case of JPEG compressed data, this designation is not necessary. So, this tag shall not be recorded. See also RowsPerStrip and StripByteCounts.
+  """
+  RowsPerStrip: Int
+
+  """
+  The total number of bytes in each strip. In the case of JPEG compressed data,, this designation is not necessary. So, this tag shall not be recorded.
+  """
+  StripByteCounts: [Int]
+
+  """
+  The offset to the start byte (SOI) of JPEG compressed thumbnail data. This shall not be used for primary image JPEG data.
+  """
+  JPEGInterchangeFormat: Int
+
+  """
+  The number of bytes of JPEG compressed thumbnail data. This is not used for primary image JPEG data. JPEG thumbnails are not divided but are recorded as a continuous JPEG bitstream from SOI to EOI. APPn and COM markers should not be recorded. Compressed thumbnails shall be recorded in no more than 64 KBytes, including all other data to be recorded in APP1.
+  """
+  JPEGInterchangeFormatLength: Int
+
+  """
+  A transfer function for the image, described in tabular style. Normally this tag need not be used , since color space is specified in the color space information tag (ColorSpace).
+  """
+  TransferFunction: [Int]
+
+  """
+  The chromaticity of the white point of the image. Normally this tag need not be used, since color space is specified in the color space information tag (ColorSpace).
+  """
+  WhitePoint: [Float]
+
+  """
+  The chromaticity of the three primary colors of the image. Normally this tag need not be used, since color space is specified in the color space information tag (ColorSpace). Count: 6
+  """
+  PrimaryChromaticities: [Float]
+
+  """
+  The matrix coefficients for transformation from RGB to YCbCr image data. No default is given in TIFF; Count: 3
+  """
+  YCbCrCoefficients: [Float]
+
+  """
+  The reference black point value and reference white point value. No defaults are given in TIFF, but the values below are given as defaults here. The color space is declared in a color space information tag, with the default being the value that gives the optimal image characteristics Interoperability these conditions.
+  """
+  ReferenceBlackWhite: [Float]
+
+  """
+  The date and time of image creation. In this standard it is the date and time the file was changed. The format is 'YYYY:MM:DD HH:MM:SS' with time shown in 24-hour format, and the date and time separated by one blank character [20.H]. When the date and time are unknown, all the character spaces except colons (':') should be filled with blank characters, or else the Interoperability field should be filled with blank characters. The character string length is 20 Bytes including NULL for termination. When the field is left blank, it is treated as unknown.
+  """
+  DateTime: String
+
+  """
+  A character string giving the title of the image. It is possible to be added a comment such as '1988 company picnic' or the like. Two-byte character codes cannot be used. When a 2-byte code is necessary, the Exif Private tag UserComment is to be used.
+  """
+  ImageDescription: String
+
+  """
+  A character string giving the title of the image. It is possible to be added a comment such as '1988 company picnic' or the like. Two-byte character codes cannot be used. When a 2-byte code is necessary, the Exif Private tag UserComment is to be used.
+  """
+  Make: String
+
+  """
+  The model name or model number of the equipment. This is the model name of number of the DSC, scanner, video digitizer or other equipment that generated the image. When the field is left blank, it is treated as unknown.
+  """
+  Model: String
+
+  """
+  This tag records the name and version of the software or firmware of the camera or image input device used to generate the image. The detailed format is not specified, but it is recommended that the example shown below be followed. When the field is left blank, it is treated as unknown. Ex.) 'Exif Software Version 1.00a'
+  """
+  Software: String
+
+  """
+  This tag records the name of the camera owner, photographer or image creator. The detailed format is not specified, but it is recommended that the information be written as in the example below for ease of Interoperability. When the field is left blank, it is treated as unknown.
+  """
+  Artist: String
+
+  """
+  In this standard the field records both the photographer and editor copyrights, with each recorded in a separate part of the statement. When there is a clear distinction between the photographer and editor copyrights, these are to be written in the order of photographer followed by editor copyright, separated by NULL (in this case, since the statement also ends with a NULL, there are two NULL codes) (see example 1). When only the photographer copyright is given, it is terminated by one NULL code (see example 2). When only the editor copyright is given, the photographer copyright part consists of one space followed by a terminating NULL code, then the editor copyright is given (see example 3). When the field is left blank, it is treated as unknown. Ex 1) When both the photographer copyright and editor copyright are given 'Photographer copyright + NULL[00.H] + editor copyright + NULL[00.H]' Ex 2) When only the photographer copyright is given 'Photographer copyright + NULL[00.H]' Ex 3) When only the editor copyright is given'Space[20.H]+ NULL[00.H] + editor copyright + NULL[00.H]'
+  """
+  Copyright: String
+
+  """"""
+  Exif: Exif
+
+  """"""
+  GPS: GPS
+}
+
+""""""
+enum Compression {
+  """uncompressed"""
+  UNCOMPRESSED
+
+  """JPEG compression (thumbnails only)"""
+  JPEG_COMPRESSION
+}
+
+""""""
+enum PhotometricInterpretation {
+  """RGB"""
+  RGB
+
+  """YCbCr"""
+  YCbCr
+}
+
+""""""
+enum Orientation {
+  """
+  The 0th row is at the visual top of the image, and the 0th column is the visual left-hand side.
+  """
+  one
+
+  """
+  The 0th row is at the visual top of the image, and the 0th column is the visual right-hand side.
+  """
+  two
+
+  """
+  The 0th row is at the visual bottom of the image, and the 0th column is the visual right-hand side.
+  """
+  three
+
+  """
+  The 0th row is at the visual bottom of the image, and the 0th column is the visual left-hand side.
+  """
+  four
+
+  """
+  The 0th row is the visual left-hand side of the image, and the 0th column is the visual top.
+  """
+  five
+
+  """
+  The 0th row is the visual right-hand side of the image, and the 0th column is the visual top.
+  """
+  six
+
+  """
+  The 0th row is the visual right-hand side of the image, and the 0th column is the visual bottom.
+  """
+  seven
+
+  """
+  The 0th row is the visual left-hand side of the image, and the 0th column is the visual bottom.
+  """
+  eight
+}
+
+""""""
+enum PlanarConfiguration {
+  """chunky format"""
+  CHUNKY
+
+  """planar format"""
+  PLANAR
+}
+
+""""""
+enum YCbCrSubSampling {
+  """YCbCr4:2:2"""
+  four_two_two
+
+  """YCbCr4:2:0"""
+  four_two_zero
+}
+
+""""""
+enum YCbCrPositioning {
+  """centered"""
+  centered
+
+  """co-sited"""
+  co_sited
+}
+
+""""""
+enum ResolutionUnit {
+  """inches"""
+  inches
+
+  """centimeters"""
+  centimeters
+}
+
+"""This represents the EXIF metadata of a media file"""
+type Exif {
+  id: Int!
+
+  """
+  The version of this standard supported. Nonexistence of this field is taken to mean nonconformance to the standard (see section 4.2). In according with conformance to this standard, this tag shall be recorded like '0230' as 4-byte ASCII. Since the type is UNDEFINED, it shall not be terminated with NULL
+  """
+  ExifVersion: String
+
+  """
+  The Flashpix format version supported by a FPXR file. If the FPXR function supports Flashpix format Ver. 1.0, this is indicated similarly to ExifVersion by recording '0100' as 4-byte ASCII. Since the type is UNDEFINED, it shall not be terminated with NULL
+  """
+  FlashpixVersion: String
+
+  """
+  The color space information tag (ColorSpace) is always recorded as the color space specifier. Normally sRGB (=1) is used to define the color space based on the PC monitor conditions and environment. If a color space other than sRGB is used, Uncalibrated (=FFFF.H) is set. Image data recorded as Uncalibrated may be treated as sRGB when it is converted to Flashpix.
+  """
+  ColorSpace: Int
+
+  """
+  Indicates the value of coefficient gamma. The formula of transfer function used for image reproduction is expressed as follows. (Reproduced value) = (Input value) gamma Both reproduced value and input value indicate normalized value, whose minimum value is 0 and maximum value is 1.
+  """
+  Gamma: Float
+
+  """
+  Information specific to compressed data. When a compressed file is recorded, the valid width of the meaningful image shall be recorded in this tag, whether or not there is padding data or a restart marker. This tag shall not exist in an uncompressed file
+  """
+  PixelXDimension: Int
+
+  """
+  Information specific to compressed data. When a compressed file is recorded, the valid height of the meaningful image shall be recorded in this tag, whether or not there is padding data or a restart marker. This tag shall not exist in an uncompressed file. For details see section 4.8.1 and Annex F. Since data padding is unnecessary in the vertical direction, the number of lines recorded in this valid image height tag will in fact be the same as that recorded in the SOF
+  """
+  PixelYDimension: Int
+
+  """
+  Information specific to compressed data. The channels of each component are arranged in order from the 1st component to the 4th. For uncompressed data the data arrangement is given in the PhotometricInterpretation tag. However, since PhotometricInterpretation can only express the order of Y,Cb and Cr, this tag is provided for cases when compressed data uses components other than Y, Cb, and Cr and to enable support of other sequences.
+  """
+  ComponentsConfiguration: Int
+
+  """
+  Information specific to compressed data. The compression mode used for a compressed image is indicated in unit bits per pixel.
+  """
+  CompressedBitsPerPixel: Float
+
+  """
+  A tag for manufacturers of Exif/DCF writers to record any desired information. The contents are up to the manufacturer, but this tag shall not be used for any other than its intended purpose.
+  """
+  MakerNote: [String]
+
+  """
+  A tag for Exif users to write keywords or comments on the image besides those in ImageDescription, and without the character code limitations of the ImageDescription tag.
+  """
+  UserComment: String
+
+  """
+  This tag is used to record the name of an audio file related to the image data. The only relational information recorded here is the Exif audio file name and extension (an ASCII string consisting of 8 characters + '.' + 3 characters). The path is not recorded.
+  """
+  RelatedSoundFile: String
+
+  """
+  The date and time when the original image data was generated. For a DSC the date and time the picture was taken are recorded. The format is "YYYY:MM:DD HH:MM:SS" with time shown in 24-hour format, and the date and time separated by one blank character [20.H]. When the date and time are unknown, all the character spaces except colons (":") should be filled with blank characters, or else the Interoperability field should be filled with blank characters. The character string length is 20 Bytes including NULL for termination. When the field is left blank, it is treated as unknown.
+  """
+  DateTimeOriginal: String
+
+  """
+  The date and time when the image was stored as digital data. If, for example, an image was captured by DSC and at the same time the file was recorded, then the DateTimeOriginal and DateTimeDigitized will have the same contents. The format is "YYYY:MM:DD HH:MM:SS" with time shown in 24-hour format, and the date and time separated by one blank character [20.H]. When the date and time are unknown, all the character spaces except colons (":")should be filled with blank characters, or else the Interoperability field should be filled with blank characters. The character string length is 20 Bytes including NULL for termination. When the field is left blank, it is treated as unknown
+  """
+  DateTimeDigitized: String
+
+  """A tag used to record fractions of seconds for the DateTime tag"""
+  SubsecTime: String
+
+  """
+  A tag used to record fractions of seconds for the DateTimeOriginal tag.
+  """
+  SubsecTimeOriginal: String
+
+  """Exposure time, given in seconds (sec)."""
+  ExposureTime: Float
+
+  """The F number"""
+  FNumber: Float
+
+  """
+  The class of the program used by the camera to set exposure when the picture is taken. The tag values are as follows.
+  """
+  ExposureProgram: ExposureProgram
+
+  """
+  Indicates the spectral sensitivity of each channel of the camera used. The tag value is an ASCII string compatible with the standard developed by the ASTM Technical committee
+  """
+  SpectralSensitivity: String
+
+  """
+  This tag indicates the sensitivity of the camera or input device when the image was shot. More specifically, it indicates one of the following values that are parameters defined in ISO 12232: standard output sensitivity (SOS), recommended exposure index (REI), or ISO speed. Accordingly, if a tag corresponding to a parameter that is designated by a SensitivityType tag is recorded, the values of the tag and of this PhotographicSensitivity tag are the same. However, if the value is 65535 (the maximum value of SHORT) or higher, the value of this tag shall be 65535. When recording this tag, the SensitivityType tag should also be recorded. In addition, while “Count = Any”, only 1 count should be used when recording this tag
+  """
+  PhotographicSensitivity: Int
+
+  """
+  Indicates the Opto-Electric Conversion Function (OECF) specified in ISO 14524. OECF is the relationship between the camera optical input and the image values
+  """
+  OECF: Int
+
+  """
+  The SensitivityType tag indicates which one of the parameters of ISO12232 is the PhotographicSensitivity tag. Although it is an optional tag, it should be recorded when a PhotographicSensitivity tag is recorded. Value = 4, 5, 6, or 7 may be used in case that the values of plural parameters are the same.
+  """
+  SensitivityType: SensitivityType
+
+  """
+  This tag indicates the standard output sensitivity value of a camera or input device defined in ISO 12232. When recording this tag, the PhotographicSensitivity and SensitivityType tags shall also be recorded.
+  """
+  StandardOutputSensitivity: Int
+
+  """
+  This tag indicates the recommended exposure index value of a camera or input device defined in ISO 12232. When recording this tag, the PhotographicSensitivity and SensitivityType tags shall also be recorded
+  """
+  RecommendedExposureIndex: Int
+
+  """
+  This tag indicates the ISO speed value of a camera or input device that is defined in ISO 12232. When recording this tag, the PhotographicSensitivity and SensitivityType tags shall also be recorded.
+  """
+  ISOSpeed: Int
+
+  """
+  This tag indicates the ISO speed latitude yyy value of a camera or input device that is defined in ISO 12232. However, this tag shall not be recorded without ISOSpeed and ISOSpeedLatitudezzz
+  """
+  ISOSpeedLatitudeyyy: Int
+
+  """
+  This tag indicates the ISO speed latitude zzz value of a camera or input device that is defined in ISO 12232. However, this tag shall not be recorded without ISOSpeed and ISOSpeedLatitudeyyy.
+  """
+  ISOSpeedLatitudezzz: Int
+
+  """
+  Shutter speed. The unit is the APEX (Additive System of Photographic Exposure) setting
+  """
+  ShutterSpeedValue: Float
+
+  """The lens aperture"""
+  ApertureValue: Float
+
+  """
+  The value of brightness. The unit is the APEX value. Ordinarily it is given in the range of -99.99 to 99.99. Note that if the numerator of the recorded value is FFFFFFFF.H, Unknown shall be indicated
+  """
+  BrightnessValue: Float
+
+  """
+  The exposure bias. The unit is the APEX value. Ordinarily it is given in the range of -99.99 to 99.99.
+  """
+  ExposureBiasValue: Float
+
+  """
+  The smallest F number of the lens. The unit is the APEX value. Ordinarily it is given in the range of 00.00 to 99.99, but it is not limited to this range.
+  """
+  MaxApertureValue: Float
+
+  """
+  The distance to the subject, given in meters. Note that if the numerator of the recorded value is FFFFFFFF.H, Infinity shall be indicated; and if the numerator is 0, Distance unknown shall be indicated.
+  """
+  SubjectDistance: Float
+
+  """The metering mode."""
+  MeteringMode: MeteringMode
+
+  """The kind of light source."""
+  LightSource: LightSource
+
+  """
+  This tag indicates the status of flash when the image was shot. Bit 0 indicates the flash firing status, bits 1 and 2 indicate the flash return status, bits 3 and 4 indicate the flash mode, bit 5 indicates whether the flash function is present, and bit 6 indicates "red eye" mode
+  """
+  Flash: Flash
+
+  """
+  This tag indicates the location and area of the main subject in the overall scene. Count between 2 and 4
+  """
+  SubjectArea: [Int]
+
+  """
+  The actual focal length of the lens, in mm. Conversion is not made to the focal length of a 35 mm film camera
+  """
+  FocalLength: Float
+
+  """
+  Indicates the strobe energy at the time the image is captured, as measured in Beam Candle Power Seconds (BCPS).
+  """
+  FlashEnergy: Float
+
+  """
+  This tag records the camera or input device spatial frequency table and SFR values in the direction of image width, image height, and diagonal direction, as specified in ISO 12233.
+  """
+  SpatialFrequencyResponse: [Int]
+
+  """
+  Indicates the number of pixels in the image width (X) direction per FocalPlaneResolutionUnit on the camera focal plane
+  """
+  FocalPlaneXResolution: Float
+
+  """
+  Indicates the number of pixels in the image height (Y) direction per FocalPlaneResolutionUnit on the camera focal plane
+  """
+  FocalPlaneYResolution: Float
+
+  """
+  Indicates the unit for measuring FocalPlaneXResolution and FocalPlaneYResolution. This value is the same as the ResolutionUnit
+  """
+  FocalPlaneResolutionUnit: ResolutionUnit
+
+  """
+  Indicates the location of the main subject in the scene. The value of this tag represents the pixel at the center of the main subject relative to the left edge, prior to rotation processing as per the Rotation tag.
+  """
+  SubjectLocation: Int
+
+  """
+  Indicates the exposure index selected on the camera or input device at the time the image is captured
+  """
+  ExposureIndex: Float
+
+  """Indicates the image sensor type on the camera or input device"""
+  SensingMethod: SensingMethod
+
+  """
+  Indicates the image source. If a DSC recorded the image, this tag value always shall be set to 3.
+  """
+  FileSource: FileSource
+
+  """
+  Indicates the type of scene. If a DSC recorded the image, this tag value shall always be set to 1, indicating that the image was directly photographed.
+  """
+  SceneType: SceneType
+
+  """
+  Indicates the color filter array (CFA) geometric pattern of the image sensor when a one-chip color area sensor is used. It does not apply to all sensing methods
+  """
+  CFAPattern: [Int]
+
+  """
+  This tag indicates the use of special processing on image data, such as rendering geared to output. When special processing is performed, the Exif/DCF reader is expected to disable or minimize any further processing
+  """
+  CustomRendered: CustomRendered
+
+  """
+  This tag indicates the exposure mode set when the image was shot. In auto-bracketing mode, the camera shoots a series of frames of the same scene at different exposure settings
+  """
+  ExposureMode: ExposureMode
+
+  """This tag indicates the white balance mode set when the image was shot"""
+  WhiteBalance: WhiteBalance
+
+  """
+  This tag indicates the digital zoom ratio when the image was shot. If the numerator of the recorded value is 0, this indicates that digital zoom was not used.
+  """
+  DigitalZoomRatio: Float
+
+  """
+  This tag indicates the equivalent focal length assuming a 35mm film camera, in mm. A value of 0 means the focal length is unknown. Note that this tag differs from the FocalLength tag.
+  """
+  FocalLengthIn35mmFilm: Int
+
+  """
+  This tag indicates the type of scene that was shot. It may also be used to record the mode in which the image was shot. Note that this differs from the scene type (SceneType) tag
+  """
+  SceneCaptureType: SceneCaptureType
+
+  """This tag indicates the degree of overall image gain adjustment"""
+  GainControl: GainControl
+
+  """
+  This tag indicates the direction of contrast processing applied by the camera when the image was shot.
+  """
+  Contrast: Contrast
+
+  """
+  This tag indicates the direction of saturation processing applied by the camera when the image was shot
+  """
+  Saturation: Saturation
+
+  """
+  This tag indicates the direction of sharpness processing applied by the camera when the image was shot.
+  """
+  Sharpness: Sharpness
+
+  """
+  This tag indicates information on the picture-taking conditions of a particular camera model. The tag is used only to indicate the picture-taking conditions in the Exif/DCF reader.
+  """
+  DeviceSettingDescription: [String]
+
+  """This tag indicates the distance to the subject"""
+  SubjectDistanceRange: SubjectDistanceRange
+
+  """
+  This tag indicates an identifier assigned uniquely to each image. It is recorded as an ASCII string equivalent to hexadecimal notation and 128-bit fixed length
+  """
+  ImageUniqueID: String
+
+  """
+  This tag records the owner of a camera used in photography as an ASCII string
+  """
+  CameraOwnerName: String
+
+  """
+  This tag records the serial number of the body of the camera that was used in photography as an ASCII string.
+  """
+  BodySerialNumber: String
+
+  """
+  This tag notes minimum focal length, maximum focal length, minimum F number in the minimum focal length, and minimum F number in the maximum focal length, which are specification information for the lens that was used in photography. When the minimum F number is unknown, the notation is 0/0. Count: 4
+  """
+  LensSpecification: [Float]
+
+  """This tag records the lens manufacturer as an ASCII string"""
+  LensMake: String
+
+  """
+  This tag records the lens’s model name and model number as an ASCII string
+  """
+  LensModel: String
+
+  """
+  This tag records the serial number of the interchangeable lens that was used in photography as an ASCII string
+  """
+  LensSerialNumber: String
+}
+
+""""""
+enum ExposureProgram {
+  """Not defined"""
+  not_defined
+
+  """Manual"""
+  manual
+
+  """Normal program"""
+  Normal
+
+  """Aperture priority"""
+  Aperture
+
+  """Shutter priority"""
+  Shutter
+
+  """Creative program (biased toward depth of field)"""
+  Creative
+
+  """Action program (biased toward fast shutter speed)"""
+  Action
+
+  """Portrait mode (for closeup photos with the background out of focus)"""
+  Portrait
+
+  """Landscape mode (for landscape photos with the background in focus)"""
+  Landscape
+}
+
+""""""
+enum SensitivityType {
+  """Unknown"""
+  Unknown
+
+  """Standard output sensitivity (SOS)"""
+  SOS
+
+  """Recommended exposure index (REI)"""
+  REI
+
+  """ISO speed"""
+  ISO
+
+  """Standard output sensitivity (SOS) and recommended exposure index (REI)"""
+  SOS_REI
+
+  """Standard output sensitivity (SOS) and ISO speed"""
+  SOS_ISO
+
+  """Recommended exposure index (REI) and ISO speed"""
+  REI_ISO
+
+  """
+  Standard output sensitivity (SOS) and recommended exposure index (REI) and ISO speed
+  """
+  SOS_REI_ISO
+}
+
+""""""
+enum MeteringMode {
+  """Unknown"""
+  Unknown
+
+  """Average"""
+  Average
+
+  """CenterWeightedAverage"""
+  CenterWeightedAverage
+
+  """Spot"""
+  Spot
+
+  """MultiSpot"""
+  MultiSpot
+
+  """Pattern"""
+  Pattern
+
+  """Partial"""
+  Partial
+
+  """Other"""
+  Other
+}
+
+""""""
+enum LightSource {
+  """Unknown"""
+  Unknown
+
+  """Daylight"""
+  Daylight
+
+  """Fluorescent"""
+  Fluorescent
+
+  """Tungsten (incandescent light)"""
+  Tungsten
+
+  """Flash"""
+  Flash
+
+  """Fine weather"""
+  Fine_weather
+
+  """Cloudy weather"""
+  Cloudy_weather
+
+  """Shade"""
+  Shade
+
+  """Daylight fluorescent (D 5700 - 7100K)"""
+  Daylight_fluorescent
+
+  """Day white fluorescent (N 4600 - 5500K)"""
+  Day_white_fluorescent
+
+  """Cool white fluorescent (W 3800 - 4500K)"""
+  Cool_white_fluorescent
+
+  """White fluorescent (WW 3250 - 3800K)"""
+  White_fluorescent
+
+  """Warm white fluorescent (L 2600 - 3250K)"""
+  Warm_white_fluorescent
+
+  """Standard light A"""
+  Standard_light_A
+
+  """Standard light B"""
+  Standard_light_B
+
+  """Standard light C"""
+  Standard_light_C
+
+  """D55"""
+  D55
+
+  """D65"""
+  D65
+
+  """D75"""
+  D75
+
+  """D50"""
+  D50
+
+  """ISO studio tungsten"""
+  ISO_Tungsten
+
+  """other light source"""
+  Other
+}
+
+"""
+This tag indicates the status of flash when the image was shot. Bit 0 indicates the flash firing status, bits 1 and 2 indicate the flash return status, bits 3 and 4 indicate the flash mode, bit 5 indicates whether the flash function is present, and bit 6 indicates "red eye" mode
+"""
+type Flash {
+  """indicating whether the flash fired"""
+  Fired: Boolean
+
+  """indicating the status of returned light"""
+  LightStatus: FlashLightStatus
+
+  """indicating the camera's flash mode"""
+  Mode: FlashLightMode
+
+  """indicating the presence of a flash function"""
+  Function: Boolean
+
+  """indicating the camera's red-eye mode"""
+  RedEye: Boolean
+}
+
+""""""
+enum FlashLightStatus {
+  """No strobe return detection function"""
+  No_Function
+
+  """Reserved"""
+  Reserved
+
+  """Strobe return light not detected."""
+  Not_Detected
+
+  """Strobe return light detected."""
+  Detected
+}
+
+""""""
+enum FlashLightMode {
+  """unknown"""
+  Unknown
+
+  """Compulsory flash firing"""
+  Firing
+
+  """Compulsory flash suppression."""
+  Suppression
+
+  """Auto mode."""
+  Auto
+}
+
+""""""
+enum SensingMethod {
+  """Not Defined"""
+  Not_Defined
+
+  """One-chip color area sensor"""
+  One_chip_color_area
+
+  """Two-chip color area sensor."""
+  Two_chip_color_area
+
+  """Three-chip color area sensor."""
+  Three_chip_color_area
+
+  """Color sequential area sensor."""
+  Color_sequential_area
+
+  """Trilinear sensor."""
+  Trilinear
+
+  """Color sequential linear sensor."""
+  Color_sequential_linear
+}
+
+""""""
+enum FileSource {
+  """others"""
+  others
+
+  """scanner of transparent type"""
+  transparent
+
+  """scanner of reflex type"""
+  reflex
+
+  """DSC."""
+  DSC
+}
+
+""""""
+enum SceneType {
+  """A directly photographed image"""
+  directly_photographed
+}
+
+""""""
+enum CustomRendered {
+  """Normal process"""
+  Normal
+
+  """Custom process"""
+  Custom
+}
+
+""""""
+enum ExposureMode {
+  """Auto Exposure"""
+  Auto_Exposure
+
+  """Manual Exposure"""
+  Manual_Exposure
+
+  """Auto bracket"""
+  Auto_Bracket
+}
+
+""""""
+enum WhiteBalance {
+  """Auto White Balance"""
+  Auto
+
+  """Manual White Balance"""
+  Manual
+}
+
+""""""
+enum SceneCaptureType {
+  """Standard"""
+  Standard
+
+  """Landscape"""
+  Landscape
+
+  """Portrait"""
+  Portrait
+
+  """Night scene"""
+  Night_Scene
+}
+
+""""""
+enum GainControl {
+  """None"""
+  None
+
+  """Low gain up"""
+  Low_Gain_Up
+
+  """High gain up"""
+  High_Gain_Up
+
+  """Low gain down"""
+  Low_Gain_Down
+
+  """High gain down"""
+  High_Gain_Down
+}
+
+""""""
+enum Contrast {
+  """Normal"""
+  Normal
+
+  """Soft"""
+  Soft
+
+  """Hard"""
+  Hard
+}
+
+""""""
+enum Saturation {
+  """Normal"""
+  Normal
+
+  """Low saturation"""
+  Low
+
+  """High saturation"""
+  High
+}
+
+""""""
+enum Sharpness {
+  """Normal"""
+  Normal
+
+  """Soft Sharpness"""
+  Soft
+
+  """Hard Sharpness"""
+  Hard
+}
+
+""""""
+enum SubjectDistanceRange {
+  """Unknown"""
+  Unknown
+
+  """Macro"""
+  Macro
+
+  """Close view"""
+  Close
+
+  """Distant view"""
+  Distant
+}
+
+"""This represents the GPS metadata of a media file"""
+type GPS {
+  """
+  Indicates the version of GPSInfoIFD. The version is given as 2.3.0.0. This tag is mandatory when GPSInfo tag is present. Note that the GPSVersionID tag is written as a different byte than the Exif Version tag
+  """
+  GPSVersionID: String
+
+  """
+  Indicates whether the latitude is north or south latitude. The ASCII value 'N' indicates north latitude, and 'S' is south latitude
+  """
+  GPSLatitudeRef: GPSLatitudeRef
+
+  """
+  Indicates the latitude. The latitude is expressed as three RATIONAL values giving the degrees, minutes, and seconds, respectively. If latitude is expressed as degrees, minutes and seconds, a typical format would be dd/1,mm/1,ss/1. When degrees and minutes are used and, for example, fractions of minutes are given up to two decimal places, the format would be dd/1,mmmm/100,0/1.
+  """
+  GPSLatitude: Float
+
+  """
+  Indicates whether the longitude is east or west longitude. ASCII 'E' indicates east longitude, and 'W' is west longitude.
+  """
+  GPSLongitudeRef: GPSLongitudeRef
+
+  """
+  Indicates the longitude. The longitude is expressed as three RATIONAL values giving the degrees, minutes, and seconds, respectively. If longitude is expressed as degrees, minutes and seconds, a typical format would be ddd/1,mm/1,ss/1. When degrees and minutes are used and, for example, fractions of minutes are given up to two decimal places, the format would be ddd/1,mmmm/100,0/1.
+  """
+  GPSLongitude: Float
+
+  """
+  Indicates the altitude used as the reference altitude. If the reference is sea level and the altitude is above sea level, 0 is given. If the altitude is below sea level, a value of 1 is given and the altitude is indicated as an absolute value in the GPSAltitude tag. The reference unit is meters. Note that this tag is BYTE type, unlike other reference tags.
+  """
+  GPSAltitudeRef: GPSAltitudeRef
+
+  """
+  Indicates the altitude based on the reference in GPSAltitudeRef. Altitude is expressed as one RATIONAL value. The reference unit is meters.
+  """
+  GPSAltitude: Float
+
+  """
+  Indicates the time as UTC (Coordinated Universal Time). TimeStamp is expressed as three RATIONAL values giving the hour, minute, and second.
+  """
+  GPSTimeStamp: [Float]
+
+  """
+  Indicates the GPS satellites used for measurements. This tag may be used to describe the number of satellites, their ID number, angle of elevation, azimuth, SNR and other information in ASCII notation. The format is not specified. If the GPS receiver is incapable of taking measurements, value of the tag shall be set to NULL.
+  """
+  GPSSatellites: String
+
+  """
+  Indicates the status of the GPS receiver when the image is recorded. 'A' means measurement is in progress, and 'V' means the measurement is interrupted.
+  """
+  GPSStatus: GPSStatus
+
+  """
+  Indicates the GPS measurement mode. '2' means two-dimensional measurement and '3' means three-dimensional measurement is in progress. Originally it was defined for GPS, but it may be used for recording a measure mode to record the position information provided from a mobile base station or wireless LAN as well as GPS.
+  """
+  GPSMeasureMode: GPSMeasureMode
+
+  """
+  Indicates the GPS DOP (data degree of precision). An HDOP value is written during two-dimensional measurement, and PDOP during three-dimensional measurement.
+  """
+  GPSDOP: Float
+
+  """
+  Indicates the unit used to express the GPS receiver speed of movement. 'K' 'M' and 'N' represents kilometers per hour, miles per hour, and knots.
+  """
+  GPSSpeedRef: [GPSSpeedRef]
+
+  """Indicates the speed of GPS receiver movement."""
+  GPSSpeed: Float
+
+  """
+  Indicates the reference for giving the direction of GPS receiver movement. 'T' denotes true direction and 'M' is magnetic direction.
+  """
+  GPSTrackRef: GPSTrackRef
+
+  """
+  Indicates the direction of GPS receiver movement. The range of values is from 0.00 to 359.99.
+  """
+  GPSTrack: Float
+
+  """
+  Indicates the reference for giving the direction of the image when it is captured. 'T' denotes true direction and 'M' is magnetic direction.
+  """
+  GPSImgDirectionRef: GPSImgDirectionRef
+
+  """
+  Indicates the direction of the image when it was captured. The range of values is from 0.00 to 359.99.
+  """
+  GPSImgDirection: Float
+
+  """
+  Indicates the geodetic survey data used by the GPS receiver. If the survey data is restricted to Japan,the value of this tag is 'TOKYO' or 'WGS-84'. If a GPS Info tag is recorded, it is strongly recommended that this tag be recorded.
+  """
+  GPSMapDatum: String
+
+  """
+  Indicates whether the latitude of the destination point is north or south latitude. The ASCII value 'N' indicates north latitude, and 'S' is south latitude.
+  """
+  GPSDestLatitudeRef: GPSDestLatitudeRef
+
+  """
+  Indicates the latitude of the destination point. The latitude is expressed as three RATIONAL values giving the degrees, minutes, and seconds, respectively. If latitude is expressed as degrees, minutes and seconds, a typical format would be dd/1,mm/1,ss/1. When degrees and minutes are used and, for example, fractions of minutes are given up to two decimal places, the format would be dd/1, mmmm/100, 0/1.
+  """
+  GPSDestLatitude: Float
+
+  """
+  Indicates whether the longitude of the destination point is east or west longitude. ASCII 'E' indicates east longitude, and 'W' is west longitude.
+  """
+  GPSDestLongitudeRef: GPSDestLongitudeRef
+
+  """
+  Indicates the longitude of the destination point. The longitude is expressed as three RATIONAL values giving the degrees, minutes, and seconds, respectively. If longitude is expressed as degrees, minutes and seconds, a typical format would be ddd/1, mm/1, ss/1. When degrees and minutes are used and, for example, fractions of minutes are given up to two decimal places, the format would be ddd/1, mmmm/100, 0/1.
+  """
+  GPSDestLongitude: [Float]
+
+  """
+  Indicates the reference used for giving the bearing to the destination point. 'T' denotes true direction and 'M' is magnetic direction.
+  """
+  GPSDestBearingRef: GPSDestBearingRef
+
+  """
+  Indicates the bearing to the destination point. The range of values is from 0.00 to 359.99.
+  """
+  GPSDestBearing: Float
+
+  """
+  Indicates the unit used to express the distance to the destination point. 'K', 'M' and 'N' represent kilometers, miles and nautical miles.
+  """
+  GPSDestDistanceRef: GPSDestDistanceRef
+
+  """Indicates the distance to the destination point."""
+  GPSDestDistance: Float
+
+  """
+  A character string recording the name of the method used for location finding. The first byte indicates the character code used and this is followed by the name of the method. Since the Type is not ASCII, NULL termination is not necessary.
+  """
+  GPSProcessingMethod: [String]
+
+  """
+  A character string recording the name of the GPS area. The first byte indicates the character code used, and this is followed by the name of the GPS area. Since the Type is not ASCII, NULL termination is not necessary.
+  """
+  GPSAreaInformation: [String]
+
+  """
+  A character string recording date and time information relative to UTC (Coordinated Universal Time). The format is "YYYY:MM:DD." The length of the string is 11 Bytes including NULL.
+  """
+  GPSDateStamp: [String]
+
+  """
+  Indicates whether differential correction is applied to the GPS receiver.
+  """
+  GPSDifferential: GPSDifferential
+
+  """This tag indicates horizontal positioning errors in meters."""
+  GPSHPositioningError: Float
+}
+
+""""""
+enum GPSLatitudeRef {
+  """North"""
+  N
+
+  """South"""
+  S
+}
+
+""""""
+enum GPSLongitudeRef {
+  """East"""
+  E
+
+  """West"""
+  W
+}
+
+""""""
+enum GPSAltitudeRef {
+  """Sea Level"""
+  Sea
+
+  """Sea Level Reference (negative value)"""
+  Sea_Neg
+}
+
+""""""
+enum GPSStatus {
+  """Measurement in progress"""
+  A
+
+  """Measurement interrupted"""
+  V
+}
+
+""""""
+enum GPSMeasureMode {
+  """2-dimensional measurement"""
+  two_D
+
+  """3-dimensional measurement"""
+  three_D
+}
+
+""""""
+enum GPSSpeedRef {
+  """Kilometers per hour"""
+  K
+
+  """Miles per hour"""
+  M
+
+  """Knots"""
+  N
+}
+
+""""""
+enum GPSTrackRef {
+  """True direction"""
+  T
+
+  """Magnetic direction"""
+  M
+}
+
+""""""
+enum GPSImgDirectionRef {
+  """True direction"""
+  T
+
+  """Magnetic direction"""
+  M
+}
+
+""""""
+enum GPSDestLatitudeRef {
+  """North Latitude"""
+  N
+
+  """South Latitude"""
+  S
+}
+
+""""""
+enum GPSDestLongitudeRef {
+  """East Longitude"""
+  E
+
+  """West Longitude"""
+  W
+}
+
+""""""
+enum GPSDestBearingRef {
+  """True direction"""
+  T
+
+  """Magnetic direction"""
+  M
+}
+
+""""""
+enum GPSDestDistanceRef {
+  """Kilometers per hour"""
+  K
+
+  """Miles per hour"""
+  M
+
+  """Knots"""
+  N
+}
+
+""""""
+enum GPSDifferential {
+  """Measurement without differential correction"""
+  No_Correction
+
+  """Differential correction applied"""
+  Correction_Applied
+}
+
+"""This represents a the data of a Calendar"""
+type iCalendar {
+  id: Int!
+
+  """"""
+  events: [vEvent]
+
+  """"""
+  todos: [vTodo]
+
+  """"""
+  journals: [vJournal]
+
+  """"""
+  freeBusys: [vFreeBusy]
+
+  """"""
+  timezones: [vTimezone]
+
+  """"""
+  calendar: vCalendar
+}
+
+"""Provide a grouping of component properties that describe an event."""
+type vEvent {
+  """vAlarm Calendar Component"""
+  alarmc: vAlarm
+
+  """
+  This property defines the access classification for a calendar component.
+  """
+  class: iCalendarClass
+
+  """
+  This property specifies the date and time that the calendar information was created by the calendar user agent in the calendar store. Note: This is analogous to the creation date and time for a file in the file system.
+  """
+  created: String
+
+  """
+  This property provides a more complete description of the calendar component, than that provided by the "SUMMARY" property.
+  """
+  description: String
+
+  """This property specifies when the calendar component begins."""
+  dtstart: String
+
+  """
+  This property specifies information related to the global position for the activity specified by a calendar component.
+  """
+  geo: [Float]
+
+  """
+  The property specifies the date and time that the information associated with the calendar component was last revised in the calendar store. Note: This is analogous to the modification date and time for a file in the file system.
+  """
+  last_mod: String
+
+  """
+  The property defines the intended venue for the activity defined by a calendar component.
+  """
+  location: iCalendarLocation
+
+  """The property defines the organizer for a calendar component."""
+  organizer: iCalendarOrganizer
+
+  """
+  The property defines the relative priority for a calendar component. Range: 0-9
+  """
+  priority: Int
+
+  """
+  The property indicates the date/time that the instance of the iCalendar object was created.
+  """
+  dtstamp: String
+
+  """
+  This property defines the revision sequence number of the calendar component within a sequence of revisions.
+  """
+  seq: Int
+
+  """
+  This property defines the overall status or confirmation for the calendar component
+  """
+  status: iCalendarStatus
+
+  """
+  This property defines a short summary or subject for the calendar component.
+  """
+  summary: String
+
+  """
+  This property defines whether an event is transparent or not to busy time searches.
+  """
+  transp: iCalendarTransp
+
+  """
+  This property defines the persistent, globally unique identifier for the calendar component.
+  """
+  uid: String
+
+  """
+  This property defines a Uniform Resource Locator (URL) associated with the iCalendar object.
+  """
+  url: String
+
+  """
+  This property is used in conjunction with the "UID" and "SEQUENCE" property to identify a specific instance of a recurring "VEVENT", "VTODO" or "VJOURNAL" calendar component. The property value is the effective value of the "DTSTART" property of the recurrence instance.
+  """
+  recurid: iCalendarRecurID
+
+  """
+  This property specifies the date and time that a calendar component ends.
+  """
+  dtend: String
+
+  """The property specifies a positive duration of time. Example: PT1H0M0S"""
+  duration: String
+
+  """
+  The property provides the capability to associate a document object with a calendar component.
+  """
+  attach: iCalendarAttach
+
+  """The property defines an "Attendee" within a calendar component."""
+  attendee: [iCalendarAttendee]
+
+  """This property defines the categories for a calendar component."""
+  categories: [String]
+
+  """
+  This property specifies non-processing information intended to provide a comment to the calendar user.
+  """
+  comment: String
+
+  """
+  The property is used to represent contact information or alternately a reference to contact information associated with the calendar component.
+  """
+  contact: String
+
+  """
+  This property defines the list of date/time exceptions for a recurring calendar component.
+  """
+  exdate: [String]
+
+  """
+  This property defines a rule or repeating pattern for an exception to a recurrence set.
+  """
+  exrule: iCalendarRecurr
+
+  """
+  This property defines the status code returned for a scheduling request.
+  """
+  rstatus: iCalendarRequestStatus
+
+  """
+  The property is used to represent a relationship or reference between one calendar component and another.
+  """
+  related: String
+
+  """
+  This property defines the equipment or resources anticipated for an activity specified by a calendar entity.
+  """
+  resources: String
+
+  """
+  This property defines the list of DATE-TIME values for recurring events, to-dos, journal entries, or time zone definitions.
+  """
+  rdate: String
+
+  """
+  This property defines a rule or repeating pattern for recurring events, to-dos, or time zone definitions
+  """
+  rrule: iCalendarRecurr
+}
+
+"""Provide a grouping of component properties that define an alarm."""
+type vAlarm {
+  """"""
+  audioprop: audioprop
+
+  """"""
+  dispprop: dispprop
+
+  """"""
+  emailprop: emailprop
+
+  """"""
+  procprop: procprop
+}
+
+"""Provide a grouping of component properties that define an alarm."""
+type audioprop {
+  """
+  This property defines the action to be invoked when an alarm is triggered.
+  """
+  action: vAlarmcAction
+
+  """This property specifies when an alarm will trigger."""
+  trigger: String
+
+  """The property specifies a positive duration of time. Example: PT1H0M0S"""
+  duration: String
+
+  """
+  This property defines the number of time the alarm should be repeated, after the initial trigger.
+  """
+  repeat: Int
+
+  """
+  The property provides the capability to associate a document object with a calendar component.
+  """
+  attach: iCalendarAttach
+}
+
+""""""
+enum vAlarmcAction {
+  """"""
+  AUDIO
+
+  """"""
+  DISPLAY
+
+  """"""
+  EMAIL
+
+  """"""
+  PROCEDURE
+}
+
+"""This represents an attachment connected to a iCalendar component"""
+type iCalendarAttach {
+  """To specify the content type of a referenced object."""
+  fmttype: String
+
+  """"""
+  value: String
+}
+
+"""Provide a grouping of component properties that define an alarm."""
+type dispprop {
+  """
+  This property defines the action to be invoked when an alarm is triggered.
+  """
+  action: vAlarmcAction
+
+  """
+  This property provides a more complete description of the calendar component, than that provided by the "SUMMARY" property.
+  """
+  description: String
+
+  """This property specifies when an alarm will trigger."""
+  trigger: String
+
+  """The property specifies a positive duration of time. Example: PT1H0M0S"""
+  duration: String
+
+  """
+  This property defines the number of time the alarm should be repeated, after the initial trigger.
+  """
+  repeat: Int
+}
+
+"""Provide a grouping of component properties that define an alarm."""
+type emailprop {
+  """
+  This property defines the action to be invoked when an alarm is triggered.
+  """
+  action: vAlarmcAction
+
+  """
+  This property provides a more complete description of the calendar component, than that provided by the "SUMMARY" property.
+  """
+  description: String
+
+  """This property specifies when an alarm will trigger."""
+  trigger: String
+
+  """
+  This property defines a short summary or subject for the calendar component.
+  """
+  summary: String
+
+  """The property defines an "Attendee" within a calendar component."""
+  attendee: [iCalendarAttendee]
+
+  """The property specifies a positive duration of time. Example: PT1H0M0S"""
+  duration: String
+
+  """
+  This property defines the number of time the alarm should be repeated, after the initial trigger.
+  """
+  repeat: Int
+}
+
+"""This represents an attendee connected to a iCalendar component"""
+type iCalendarAttendee {
+  """to indicate the type of calendar user"""
+  cutype: iCalendarAttendeeCutype
+
+  """to indicate the groups that the attendee belongs to"""
+  member: String
+
+  """
+  for the intended role that the attendee will have in the calendar component
+  """
+  role: iCalendarAttendeeRole
+
+  """for the status of the attendee's participation"""
+  partstat: iCalendarAttendeePartStat
+
+  """for the status of the attendee's participation"""
+  rsvp: Boolean
+
+  """
+  to indicate the calendar users that the original request was delegated to
+  """
+  delto: String
+
+  """to indicate whom the request was delegated from"""
+  delfrom: String
+
+  """to indicate whom is acting on behalf of the ATTENDEE"""
+  sentby: String
+
+  """the common or displayable name associated with the calendar address"""
+  cn: String
+
+  """
+  to indicate the URI that points to the directory information corresponding to the attendee
+  """
+  dir: String
+
+  """
+  If the LANGUAGE property parameter is specified, the identified language applies to the CN parameter.
+  """
+  language: String
+
+  """"""
+  mailto: String
+}
+
+""""""
+enum iCalendarAttendeeCutype {
+  """"""
+  INDIVIDUAL
+
+  """"""
+  UNKNOWN
+
+  """"""
+  GROUP
+
+  """"""
+  ROOM
+}
+
+""""""
+enum iCalendarAttendeeRole {
+  """"""
+  CHAIR
+
+  """"""
+  REQ_PARTICIPANT
+
+  """"""
+  GROUP
+}
+
+""""""
+enum iCalendarAttendeePartStat {
+  """"""
+  NEEDS_ACTION
+
+  """"""
+  ACCEPTED
+
+  """"""
+  DECLINED
+
+  """"""
+  TENTATIVE
+
+  """"""
+  DELEGATED
+}
+
+"""Provide a grouping of component properties that define an alarm."""
+type procprop {
+  """
+  This property defines the action to be invoked when an alarm is triggered.
+  """
+  action: vAlarmcAction
+
+  """
+  The property provides the capability to associate a document object with a calendar component.
+  """
+  attach: iCalendarAttach
+
+  """This property specifies when an alarm will trigger."""
+  trigger: String
+
+  """The property specifies a positive duration of time. Example: PT1H0M0S"""
+  duration: String
+
+  """
+  This property defines the number of time the alarm should be repeated, after the initial trigger.
+  """
+  repeat: Int
+
+  """
+  This property provides a more complete description of the calendar component, than that provided by the "SUMMARY" property.
+  """
+  description: String
+}
+
+""""""
+enum iCalendarClass {
+  """"""
+  PUBLIC
+
+  """"""
+  PRIVATE
+
+  """"""
+  CONFIDENTIAL
+}
+
+"""This represents a location connected to a iCalendar component"""
+type iCalendarLocation {
+  """
+  An alternate representation may be specified that is a URI that points to directory information with more structured specification of the location
+  """
+  altrep: String
+
+  """
+  Specific venues such as conference or meeting rooms may be explicitly specified using this property
+  """
+  value: String
+}
+
+"""This represents the organizer(s) connected to a iCalendar component"""
+type iCalendarOrganizer {
+  """
+  specifying another calendar user that is acting on behalf of the "Organizer"
+  """
+  sentby: String
+
+  """
+  Specifying the common or display name associated with the "Organizer"
+  """
+  cn: String
+
+  """
+  specifying a pointer to the directory information associated with the "Organizer"
+  """
+  dir: String
+
+  """
+  If the LANGUAGE property parameter is specified, the identified language applies to the CN parameter.
+  """
+  language: String
+
+  """
+  Specific venues such as conference or meeting rooms may be explicitly specified using this property
+  """
+  mailto: String
+}
+
+""""""
+enum iCalendarStatus {
+  """Indicates event is tentative"""
+  TENTATIVE
+
+  """Indicates event is definite"""
+  CONFIRMED
+
+  """Indicates event is cancelled"""
+  CANCELLED
+}
+
+""""""
+enum iCalendarTransp {
+  """Blocks or opaque on busy time searches"""
+  OPAQUE
+
+  """Transparent on busy time searches"""
+  TRANSPARENT
+}
+
+"""identify a specific instance of a recurring iCalendar component"""
+type iCalendarRecurID {
+  """Time zone identifier"""
+  tzid: String
+
+  """
+  indicate a range defined by the given recurrence instance and all prior instances
+  """
+  THISANDPRIOR: String
+
+  """
+  specifying a pointer to the directory information associated with the "Organizer"
+  """
+  dir: String
+
+  """
+  indicate a range defined by the given recurrence instance and all subsequent instances
+  """
+  THISANDFUTURE: String
+}
+
+"""
+This value type is used to identify properties that contain a recurrence rule specification
+"""
+type iCalendarRecurr {
+  """The FREQ rule part identifies the type of recurrence rule"""
+  freq: iCalendarRecurrFreq
+
+  """
+  defines a date-time value which bounds the recurrence rule in an inclusive manner
+  """
+  until: String
+
+  """
+  defines the number of occurrences at which to range-bound the recurrence. Range: 0-9
+  """
+  count: Int
+
+  """
+  contains a positive integer representing how often the recurrence rule repeats. Range: 0-9
+  """
+  interval: Int
+
+  """
+  specifies a COMMA character (US-ASCII decimal 44) separated list of seconds within a minute. Valid values are 0 to 59
+  """
+  bySecond: [Int]
+
+  """
+  specifies a COMMA character (US-ASCII decimal 44) separated list of minutes within an hour. Valid values are 0 to 59
+  """
+  byMinute: [Int]
+
+  """
+  specifies a COMMA character (US- ASCII decimal 44) separated list of hours of the day. Valid values are 0 to 23
+  """
+  byHour: [Int]
+
+  """
+  specifies a COMMA character (US-ASCII decimal 44) separated list of days of the week. Example:BYDAY=-1SU
+  """
+  byDay: String
+
+  """
+  specifies a COMMA character (ASCII decimal 44) separated list of days of the month. Valid values are 1 to 31 or -31 to -1.
+  """
+  byMonthDay: [Int]
+
+  """
+  specifies a COMMA character (US-ASCII decimal 44) separated list of days of the year. Valid values are 1 to 366 or -366 to -1
+  """
+  byYearDay: [Int]
+
+  """
+  specifies a COMMA character (US-ASCII decimal 44) separated list of ordinals specifying weeks of the year. Valid values are 1 to 53 or -53 to -1.
+  """
+  byWeekNo: [Int]
+
+  """
+  specifies a COMMA character (US-ASCII decimal 44) separated list of months of the year. Valid values are 1 to 12.
+  """
+  byMonth: [Int]
+
+  """
+  specifies a COMMA character (US-ASCII decimal 44) separated list of values which corresponds to the nth occurrence within the set of events specified by the rule. Valid values are 1 to 366 or -366 to -1.
+  """
+  bySetPos: [Int]
+
+  """specifies the day on which the workweek starts"""
+  wkst: iCalendarRecurrWkst
+}
+
+""""""
+enum iCalendarRecurrFreq {
+  """"""
+  SECONDLY
+
+  """"""
+  MINUTELY
+
+  """"""
+  HOURLY
+
+  """"""
+  DAILY
+
+  """"""
+  WEEKLY
+
+  """"""
+  MONTHLY
+
+  """"""
+  YEARLY
+}
+
+""""""
+enum iCalendarRecurrWkst {
+  """Sunday"""
+  SU
+
+  """Monday"""
+  MO
+
+  """Tuesday"""
+  TU
+
+  """Wednesday"""
+  WE
+
+  """Thursday"""
+  TH
+
+  """Friday"""
+  FR
+
+  """Saturday"""
+  SA
+}
+
+"""identify a specific instance of a recurring iCalendar component"""
+type iCalendarRequestStatus {
+  """
+  1.xx
+  Preliminary success.  This class of status code indicates that the request has been initially processed but that completion is pending.
+  2.xx
+  Successful.  This class of status code indicates that the request was completed successfully.  However, the exact status code can indicate that a fallback has been taken.
+  3.xx
+  Client Error.  This class of status code indicates that the request was not successful.  The error is the result of either a syntax or a semantic error in the client-formatted request.  Request should not be retried until the condition in the request is corrected.
+  4.xx
+  Scheduling Error.  This class of status code indicates that the request was not successful.  Some sort of error occurred within the calendaring and scheduling service, not directly related to the request itself.
+  """
+  value: Float
+
+  """"""
+  desc: String
+}
+
+"""Provide a grouping of calendar properties that describe a to-do."""
+type vTodo {
+  """vAlarm Calendar Component"""
+  alarmc: vAlarm
+
+  """
+  This property defines the access classification for a calendar component.
+  """
+  class: iCalendarClass
+
+  """
+  This property defines the date and time that a to-do was actually completed.
+  """
+  completed: String
+
+  """
+  This property specifies the date and time that the calendar information was created by the calendar user agent in the calendar store. Note: This is analogous to the creation date and time for a file in the file system.
+  """
+  created: String
+
+  """
+  This property provides a more complete description of the calendar component, than that provided by the "SUMMARY" property.
+  """
+  description: String
+
+  """
+  The property indicates the date/time that the instance of the iCalendar object was created.
+  """
+  dtstamp: String
+
+  """
+  This property specifies information related to the global position for the activity specified by a calendar component.
+  """
+  geo: [Float]
+
+  """
+  The property specifies the date and time that the information associated with the calendar component was last revised in the calendar store. Note: This is analogous to the modification date and time for a file in the file system.
+  """
+  last_mod: String
+
+  """
+  The property defines the intended venue for the activity defined by a calendar component.
+  """
+  location: iCalendarLocation
+
+  """The property defines the organizer for a calendar component."""
+  organizer: iCalendarOrganizer
+
+  """
+  This property is used by an assignee or delegatee of a to-do to convey the percent completion of a to-do to the Organizer.
+  """
+  percent: Int
+
+  """
+  The property defines the relative priority for a calendar component. Range: 0-9
+  """
+  priority: Int
+
+  """
+  This property is used in conjunction with the "UID" and "SEQUENCE" property to identify a specific instance of a recurring "VEVENT", "VTODO" or "VJOURNAL" calendar component. The property value is the effective value of the "DTSTART" property of the recurrence instance.
+  """
+  recurid: iCalendarRecurID
+
+  """
+  This property defines the revision sequence number of the calendar component within a sequence of revisions.
+  """
+  seq: Int
+
+  """
+  This property defines the overall status or confirmation for the calendar component
+  """
+  status: iCalendarStatus
+
+  """
+  This property defines a short summary or subject for the calendar component.
+  """
+  summary: String
+
+  """
+  This property defines the persistent, globally unique identifier for the calendar component.
+  """
+  uid: String
+
+  """
+  This property defines a Uniform Resource Locator (URL) associated with the iCalendar object.
+  """
+  url: String
+
+  """
+  This property defines the date and time that a to-do is expected to be completed.
+  """
+  due: String
+
+  """The property specifies a positive duration of time. Example: PT1H0M0S"""
+  duration: String
+
+  """
+  The property provides the capability to associate a document object with a calendar component.
+  """
+  attach: iCalendarAttach
+
+  """The property defines an "Attendee" within a calendar component."""
+  attendee: [iCalendarAttendee]
+
+  """This property defines the categories for a calendar component."""
+  categories: [String]
+
+  """
+  This property specifies non-processing information intended to provide a comment to the calendar user.
+  """
+  comment: String
+
+  """
+  The property is used to represent contact information or alternately a reference to contact information associated with the calendar component.
+  """
+  contact: String
+
+  """
+  This property defines the list of date/time exceptions for a recurring calendar component.
+  """
+  exdate: [String]
+
+  """
+  This property defines a rule or repeating pattern for an exception to a recurrence set.
+  """
+  exrule: iCalendarRecurr
+
+  """
+  This property defines the status code returned for a scheduling request.
+  """
+  rstatus: iCalendarRequestStatus
+
+  """
+  The property is used to represent a relationship or reference between one calendar component and another.
+  """
+  related: String
+
+  """
+  This property defines the equipment or resources anticipated for an activity specified by a calendar entity.
+  """
+  resources: String
+
+  """
+  This property defines the list of DATE-TIME values for recurring events, to-dos, journal entries, or time zone definitions.
+  """
+  rdate: String
+
+  """
+  This property defines a rule or repeating pattern for recurring events, to-dos, or time zone definitions
+  """
+  rrule: iCalendarRecurr
+}
+
+"""
+Provide a grouping of component properties that describe a journal entry
+"""
+type vJournal {
+  """
+  This property defines the access classification for a calendar component.
+  """
+  class: iCalendarClass
+
+  """
+  This property specifies the date and time that the calendar information was created by the calendar user agent in the calendar store. Note: This is analogous to the creation date and time for a file in the file system.
+  """
+  created: String
+
+  """
+  This property provides a more complete description of the calendar component, than that provided by the "SUMMARY" property.
+  """
+  description: String
+
+  """This property specifies when the calendar component begins."""
+  dtstart: String
+
+  """
+  The property indicates the date/time that the instance of the iCalendar object was created.
+  """
+  dtstamp: String
+
+  """
+  The property specifies the date and time that the information associated with the calendar component was last revised in the calendar store. Note: This is analogous to the modification date and time for a file in the file system.
+  """
+  last_mod: String
+
+  """The property defines the organizer for a calendar component."""
+  organizer: iCalendarOrganizer
+
+  """
+  This property is used in conjunction with the "UID" and "SEQUENCE" property to identify a specific instance of a recurring "VEVENT", "VTODO" or "VJOURNAL" calendar component. The property value is the effective value of the "DTSTART" property of the recurrence instance.
+  """
+  recurid: iCalendarRecurID
+
+  """
+  This property defines the revision sequence number of the calendar component within a sequence of revisions.
+  """
+  seq: Int
+
+  """
+  This property defines the overall status or confirmation for the calendar component
+  """
+  status: iCalendarStatus
+
+  """
+  This property defines a short summary or subject for the calendar component.
+  """
+  summary: String
+
+  """
+  This property defines the persistent, globally unique identifier for the calendar component.
+  """
+  uid: String
+
+  """
+  This property defines a Uniform Resource Locator (URL) associated with the iCalendar object.
+  """
+  url: String
+
+  """
+  This property defines the date and time that a to-do is expected to be completed.
+  """
+  due: String
+
+  """
+  The property provides the capability to associate a document object with a calendar component.
+  """
+  attach: iCalendarAttach
+
+  """The property defines an "Attendee" within a calendar component."""
+  attendee: [iCalendarAttendee]
+
+  """This property defines the categories for a calendar component."""
+  categories: [String]
+
+  """
+  This property specifies non-processing information intended to provide a comment to the calendar user.
+  """
+  comment: String
+
+  """
+  The property is used to represent contact information or alternately a reference to contact information associated with the calendar component.
+  """
+  contact: String
+
+  """
+  This property defines the list of date/time exceptions for a recurring calendar component.
+  """
+  exdate: [String]
+
+  """
+  This property defines a rule or repeating pattern for an exception to a recurrence set.
+  """
+  exrule: iCalendarRecurr
+
+  """
+  The property is used to represent a relationship or reference between one calendar component and another.
+  """
+  related: String
+
+  """
+  This property defines the list of DATE-TIME values for recurring events, to-dos, journal entries, or time zone definitions.
+  """
+  rdate: String
+
+  """
+  This property defines a rule or repeating pattern for recurring events, to-dos, or time zone definitions
+  """
+  rrule: iCalendarRecurr
+
+  """
+  This property defines the status code returned for a scheduling request.
+  """
+  rstatus: iCalendarRequestStatus
+}
+
+"""
+Provide a grouping of component properties that describe either a request for free/busy time, describe a response to a request for free/busy time or describe a published set of busy time.
+"""
+type vFreeBusy {
+  """
+  The property is used to represent contact information or alternately a reference to contact information associated with the calendar component.
+  """
+  contact: String
+
+  """This property specifies when the calendar component begins."""
+  dtstart: String
+
+  """
+  This property specifies the date and time that a calendar component ends.
+  """
+  dtend: String
+
+  """The property specifies a positive duration of time. Example: PT1H0M0S"""
+  duration: String
+
+  """
+  The property indicates the date/time that the instance of the iCalendar object was created.
+  """
+  dtstamp: String
+
+  """The property defines the organizer for a calendar component."""
+  organizer: iCalendarOrganizer
+
+  """
+  This property defines the persistent, globally unique identifier for the calendar component.
+  """
+  uid: String
+
+  """
+  This property defines a Uniform Resource Locator (URL) associated with the iCalendar object.
+  """
+  url: String
+
+  """The property defines an "Attendee" within a calendar component."""
+  attendee: [iCalendarAttendee]
+
+  """
+  This property specifies non-processing information intended to provide a comment to the calendar user.
+  """
+  comment: String
+
+  """The property defines one or more free or busy time intervals."""
+  freebusy: iCalendarFreeBusy
+
+  """
+  This property defines the status code returned for a scheduling request.
+  """
+  rstatus: iCalendarRequestStatus
+}
+
+"""identify a free busy time interval of a iCalendar component"""
+type iCalendarFreeBusy {
+  """To specify the free or busy time type."""
+  fbtype: fbtype
+
+  """"""
+  value: String
+}
+
+""""""
+enum fbtype {
+  """indicates that the time interval is free for scheduling"""
+  FREE
+
+  """
+  indicates that the time interval is busy because one or more events have been scheduled for that interval
+  """
+  BUSY
+
+  """
+  indicates that the time interval is busy and that the interval can not be scheduled
+  """
+  BUSY_UNAVAILABLE
+
+  """
+  indicates that the time interval is busy because one or more events have been tentatively scheduled for that interval
+  """
+  BUSY_TENTATIVE
+}
+
+"""Provide a grouping of component properties that defines a time zone"""
+type vTimezone {
+  """
+  This property specifies the text value that uniquely identifies the "VTIMEZONE" calendar component.
+  """
+  tzid: String
+
+  """
+  The property specifies the date and time that the information associated with the calendar component was last revised in the calendar store. Note: This is analogous to the modification date and time for a file in the file system.
+  """
+  last_mod: String
+
+  """
+  The TZURL provides a means for a VTIMEZONE component to point to a network location that can be used to retrieve an up-to- date version of itself.
+  """
+  tzurl: String
+
+  """
+  The TZURL provides a means for a VTIMEZONE component to point to a network location that can be used to retrieve an up-to- date version of itself.
+  """
+  timezone: [iCalendarTimezone]
+}
+
+"""identify a timezone of a iCalendar component"""
+type iCalendarTimezone {
+  """"""
+  type: type
+
+  """This property specifies when the calendar component begins."""
+  dtstart: String
+
+  """
+  This property specifies the offset which is in use in this time zone observance.
+  """
+  tzoffsetto: String
+
+  """
+  This property specifies the offset which is in use prior to this time zone observance.
+  """
+  tzoffsetfrom: String
+
+  """
+  This property specifies non-processing information intended to provide a comment to the calendar user.
+  """
+  comment: String
+
+  """
+  This property defines the list of DATE-TIME values for recurring events, to-dos, journal entries, or time zone definitions.
+  """
+  rdate: String
+
+  """
+  This property defines a rule or repeating pattern for recurring events, to-dos, or time zone definitions
+  """
+  rrule: iCalendarRecurr
+
+  """
+  This property specifies the customary designation for a time zone description.
+  """
+  tzname: String
+}
+
+""""""
+enum type {
+  """"""
+  STANDARD
+
+  """"""
+  DAYLIGHT
+}
+
+"""Provide a grouping of component properties that defines a calendar"""
+type vCalendar {
+  """
+  This property specifies the identifier for the product that created the iCalendar object.
+  """
+  prodid: String
+
+  """
+  This property specifies the identifier corresponding to the highest version number or the minimum and maximum range of the iCalendar specification that is required in order to interpret the iCalendar object.
+  """
+  version: String
+
+  """
+  This property defines the calendar scale used for the calendar information specified in the iCalendar object.
+  """
+  calscale: String
+
+  """
+  This property defines the iCalendar object method associated with the calendar object.
+  """
+  method: [iCalendarTimezone]
+}
+
+""""""
+type contact {
+  """An enum identifying the contact type."""
+  contactType: contactType
+
+  """The name prefix of the contact"""
+  namePrefix: String
+
+  """The given name of the contact."""
+  givenName: String
+
+  """The middle name of the contact."""
+  middleName: String
+
+  """The family name of the contact"""
+  familyName: String
+
+  """A string for the previous family name of the contact."""
+  previousFamilyName: String
+
+  """The name suffix of the contact."""
+  nameSuffix: String
+
+  """The nickname of the contact."""
+  nickname: String
+
+  """The phonetic given name of the contact."""
+  phoneticGivenName: String
+
+  """The phonetic middle name of the contact."""
+  phoneticMiddleName: String
+
+  """A string for the phonetic family name of the contact."""
+  phoneticFamilyName: String
+
+  """The contact’s job title."""
+  jobTitle: String
+
+  """The name of the department associated with the contact"""
+  departmentName: String
+
+  """The name of the organization associated with the contact"""
+  organizationName: String
+
+  """The phonetic name of the organization associated with the contact"""
+  phoneticOrganizationName: String
+
+  """An array of labeled postal addresses for a contact."""
+  postalAddresses: [LabeledAddress]
+
+  """An array of labeled email addresses for the contact"""
+  emailAddresses: [LabeledString]
+
+  """An array of labeled URL addresses for a contact"""
+  urlAddresses: [LabeledString]
+
+  """An array of labeled phone numbers for a contact"""
+  phoneNumbers: [LabeledString]
+
+  """An array of labeled social profiles for a contact"""
+  socialProfiles: [LabeledSocialProfile]
+
+  """A date component for the Gregorian birthday of the contact"""
+  birthday: String
+
+  """A date component for the Gregorian birthday of the contact"""
+  dates: [LabeledString]
+
+  """A string containing notes for the contact."""
+  note: String
+
+  """The profile picture of a contact."""
+  imageData: String
+
+  """The thumbnail version of the contact’s profile picture."""
+  thumbnailImageData: String
+
+  """A Boolean indicating whether a contact has a profile picture."""
+  imageDataAvailable: Boolean
+
+  """An array of labeled contact relations for the contact."""
+  contactRelations: [LabeledString]
+
+  """An array of labeled IM addresses for the contact."""
+  instantMessageAddresses: [LabeledIMA]
+}
+
+""""""
+enum contactType {
+  """"""
+  person
+
+  """"""
+  organization
+}
+
+""""""
+type LabeledAddress {
+  """The label for a contact property value"""
+  label: String
+
+  """A contact property value"""
+  value: PostalAddress
+}
+
+""""""
+type PostalAddress {
+  """The street name in a postal address"""
+  street: String
+
+  """The city name in a postal address"""
+  city: String
+
+  """The state name in a postal address"""
+  state: String
+
+  """The state name in a postal address"""
+  postalCode: String
+
+  """The country or region name in a postal address"""
+  country: String
+
+  """
+  The ISO country code for the country or region in a postal address, using the ISO 3166-1 alpha-2 standard
+  """
+  isoCountryCode: String
+
+  """
+  The subadministrative area (such as a county or other region) in a postal address
+  """
+  subAdministrativeArea: String
+
+  """
+  Additional information associated with the location, typically defined at the city or town level, in a postal address
+  """
+  subLocality: String
+}
+
+""""""
+type LabeledString {
+  """The label for a contact property value"""
+  label: String
+
+  """A contact property value"""
+  value: String
+}
+
+""""""
+type LabeledSocialProfile {
+  """The label for a contact property value"""
+  label: String
+
+  """A contact property value"""
+  value: SocialProfile
+}
+
+""""""
+type SocialProfile {
+  """The user name for the social profile"""
+  username: String
+
+  """The social profile’s service name"""
+  service: String
+
+  """The URL associated with the social profile"""
+  urlString: String
+
+  """The service’s user identifier associated with the social profile"""
+  userIdentifier: String
+}
+
+""""""
+type LabeledIMA {
+  """The label for a contact property value"""
+  label: String
+
+  """A contact property value"""
+  value: InstantMessageAddress
+}
+
+""""""
+type InstantMessageAddress {
+  """The social profile’s service name"""
+  service: String
+
+  """The user name for the social profile"""
+  username: String
+}
+
+""""""
+type individual {
+  prifinaID: Int!
+
+  """"""
+  credentials: [PrifinaCredential]
+
+  """"""
+  systemProfile: systemProfile
+
+  """"""
+  personProfile: personProfile
+
+  """"""
+  activityData: ActivityData
+
+  """"""
+  entities: [Entity]
+
+  """"""
+  installedApps: [Int]
+
+  """"""
+  installedWidgets: [Int]
+
+  """"""
+  notifications: [prifiinaIndividualNotifications]
+}
+
+""""""
+type PrifinaCredential {
+  """"""
+  username: String
+
+  """"""
+  accessRoleGroup: prifinaAccessRoleGroup
+
+  """"""
+  verifiedContacts: verifiedContacts
+}
+
+""""""
+enum prifinaAccessRoleGroup {
+  """"""
+  user
+
+  """"""
+  developer
+
+  """"""
+  prifina
+
+  """3rd party/partner"""
+  external
+}
+
+""""""
+type verifiedContacts {
+  """"""
+  trustedDevice: [trustedDevice]
+
+  """"""
+  email: [prifinaEmail]
+
+  """"""
+  phoneNum: [prifinaPhoneNum]
+}
+
+""""""
+type trustedDevice {
+  """"""
+  cookie: String
+
+  """"""
+  uuid: String
+
+  """"""
+  ip: String
+}
+
+""""""
+type prifinaEmail {
+  """"""
+  email: String
+
+  """"""
+  emailVerified: Boolean
+
+  """"""
+  primary: Boolean
+}
+
+""""""
+type prifinaPhoneNum {
+  """"""
+  phoneNumber: String
+
+  """"""
+  phoneNumberVerified: Boolean
+
+  """"""
+  primary: Boolean
+
+  """"""
+  type: prifinaPhoneNumType
+}
+
+""""""
+enum prifinaPhoneNumType {
+  """"""
+  home
+
+  """"""
+  work
+}
+
+""""""
+type systemProfile {
+  """"""
+  name: String
+
+  """"""
+  givenName: String
+
+  """"""
+  middleName: String
+
+  """"""
+  familyName: String
+
+  """"""
+  gender: String
+
+  """"""
+  email: [prifinaEmail]
+
+  """"""
+  phoneNum: [prifinaPhoneNum]
+
+  """"""
+  avatarPicture: String
+
+  """"""
+  address: [prifinaAddress]
+
+  """"""
+  paymentDetails: [prifinaPaymentDetails]
+
+  """"""
+  subscriptionDetails: prifinaSubscriptionDetails
+
+  """"""
+  credits: Int
+}
+
+""""""
+type prifinaAddress {
+  """
+  Full mailing address, formatted for display or use on a mailing label. This field MAY contain multiple lines, separated by newline characters.
+  """
+  formatted: String
+
+  """
+  Full street address component, which MAY include house number, street name, Post Office Box, and multi-line extended street address information. This field MAY contain multiple lines, separated by newline characters.
+  """
+  streetAddress: String
+
+  """City or locality component."""
+  locality: String
+
+  """State, province, prefecture or region component."""
+  region: String
+
+  """Zip code or postal code component."""
+  postalCode: String
+
+  """Country name component."""
+  country: String
+
+  """"""
+  type: prifinaAddressType
+}
+
+""""""
+enum prifinaAddressType {
+  """"""
+  home
+
+  """"""
+  work
+}
+
+""""""
+type prifinaPaymentDetails {
+  """"""
+  paypal: String
+}
+
+"""Stripe"""
+type prifinaSubscriptionDetails {
+  """Stripe"""
+  customerID: String
+
+  """Stripe"""
+  subscriptionID: String
+
+  """"""
+  active: Boolean
+}
+
+""""""
+type personProfile {
+  """"""
+  name: String
+
+  """"""
+  type: personProfileEnum
+
+  """"""
+  profileDetails: prifinaProfileDetails
+}
+
+""""""
+enum personProfileEnum {
+  """Anonymous"""
+  Anonymous
+
+  """Anonymous role specific"""
+  Anonymous_role_specific
+
+  """General Social"""
+  General_Social
+
+  """Real Person General Work"""
+  Real_Person_General_Work
+
+  """Real Person Specific Company Role"""
+  Real_Person_Specific_Company_Role
+
+  """Service Specific"""
+  Service_Specific
+}
+
+union prifinaProfileDetails = GeneralSocialTemplate | GeneralWorkTemplate
+
+""""""
+type GeneralSocialTemplate {
+  """"""
+  interests: [String]
+}
+
+""""""
+type GeneralWorkTemplate {
+  """"""
+  job: String
+}
+
+""""""
+type ActivityData {
+  """ID"""
+  lastApp: Int!
+
+  """"""
+  timestamp: String
+}
+
+""""""
+type Entity {
+  """"""
+  entityID: prifinaEntities
+
+  """"""
+  role: String
+}
+
+union prifinaEntities = CompanyEntity | FamilyEntity | CommunityEntity
+
+""""""
+type CompanyEntity {
+  """"""
+  entityID: Int!
+
+  """"""
+  name: String
+
+  """"""
+  logo: String
+
+  """"""
+  members: [CompanyEntityMember]
+
+  """"""
+  projects: [prifinaProject]
+}
+
+""""""
+type CompanyEntityMember {
+  """"""
+  prifinaIndividual: individual
+
+  """"""
+  role: companyProfileRoleEnum
+}
+
+""""""
+enum companyProfileRoleEnum {
+  """Developer"""
+  Dev
+
+  """Community Manager"""
+  Community_Manager
+
+  """Marketer"""
+  Marketer
+
+  """Account Holder"""
+  Account_Holder
+}
+
+""""""
+type prifinaProject {
+  """"""
+  appMarketListing: prifinaAppMarketListing
+
+  """"""
+  appPackage: String
+
+  """"""
+  appType: prifinaProjectAppTypeUnion
+
+  """"""
+  appSettings: [prifinaProjectSetting]
+
+  """"""
+  assets: [String]
+
+  """"""
+  dataTypes: [String]
+  id: Int!
+
+  """"""
+  identity: String
+
+  """"""
+  identityPool: String
+
+  """"""
+  internalStatus: prifinaProjectStatusEnum
+
+  """"""
+  manifest: String
+
+  """"""
+  nextVersion: String
+
+  """"""
+  prifinaID: individual
+
+  """"""
+  publishStatus: prifinaProjectStatusEnum
+
+  """"""
+  public: String
+
+  """"""
+  remoteUrl: [String]
+
+  """"""
+  status: Int
+
+  """"""
+  sub: String
+
+  """"""
+  type: prifiinaProjectTypeEnum
+
+  """"""
+  visible: Boolean
+
+  """"""
+  editable: Boolean
+}
+
+""""""
+type prifinaAppMarketListing {
+  """"""
+  age: prifiinaAppMarketListingAgeEnum
+
+  """"""
+  category: prifiinaAppMarketListingCategoryEnum
+
+  """"""
+  dataSources: [String]
+
+  """"""
+  deviceSupport: prifiinaAppMarketListingDeviceSupportEnum
+
+  """"""
+  icon: String
+
+  """"""
+  appID: String
+
+  """"""
+  keyFeatures: [String]
+
+  """"""
+  languages: [prifiinaAppMarketListingLanguageEnum]
+
+  """"""
+  longDescription: String
+
+  """"""
+  name: String
+
+  """"""
+  public: [String]
+
+  """"""
+  publisher: [String]
+
+  """"""
+  screenshots: [String]
+
+  """"""
+  settings: [prifinaProjectSetting]
+
+  """"""
+  shortDescription: String
+
+  """"""
+  title: String
+
+  """"""
+  userGeneratered: [String]
+
+  """"""
+  userHeld: [String]
+
+  """"""
+  version: String
+}
+
+""""""
+enum prifiinaAppMarketListingAgeEnum {
+  """3+"""
+  family
+
+  """7+"""
+  child
+
+  """12+"""
+  teen
+
+  """18+"""
+  adults
+}
+
+""""""
+enum prifiinaAppMarketListingCategoryEnum {
+  """Health & Fitness"""
+  Health_Fitness
+
+  """"""
+  Communciation
+
+  """"""
+  Productivity
+
+  """"""
+  Gaming
+
+  """"""
+  Weather
+
+  """"""
+  Other
+}
+
+""""""
+enum prifiinaAppMarketListingDeviceSupportEnum {
+  """"""
+  Desktop
+}
+
+""""""
+enum prifiinaAppMarketListingLanguageEnum {
+  """English"""
+  en
+}
+
+""""""
+type prifinaProjectSetting {
+  """"""
+  field: String
+
+  """"""
+  type: String
+
+  """"""
+  label: String
+
+  """"""
+  value: String
+}
+
+union prifinaProjectAppTypeUnion = prifinaProjectAppType | prifinaProjectWidgetType
+
+""""""
+type prifinaProjectAppType {
+  """"""
+  type: prifinaProjectAppTypeEnum
+}
+
+"""Types of an App"""
+enum prifinaProjectAppTypeEnum {
+  """Apps that run privately for you, using data from your personal cloud"""
+  Private
+
+  """
+  Apps that run on third-party servers personalize your experience with data profiles (using the iFrame communication interface).
+  """
+  Profile
+
+  """
+  Apps that run privately between multiple authorized personal clouds, where data remain in everyone's own cloud
+  """
+  Multi_user
+
+  """
+  Apps that primarily run on third-party servers with two-way API connection to your personal cloud.
+  """
+  Remote
+
+  """Apps that run on your public URL, using data from your private cloud, """
+  Public
+}
+
+""""""
+type prifinaProjectWidgetType {
+  """"""
+  type: prifinaProjectWidgetTypeEnum
+}
+
+"""Types of a Widget"""
+enum prifinaProjectWidgetTypeEnum {
+  """
+  Small apps running privately from your personal cloud inside a display app container using primarily personal data.
+  """
+  Private
+
+  """
+  Small Apps that run privately between multiple authorized personal clouds, where your content stays on your cloud.
+  """
+  Multi_user
+
+  """
+  Small apps that run privately from your personal cloud inside a display app container using primarily public API data.
+  """
+  Remote
+
+  """
+  Small apps that run publicly from your personal cloud inside a public display app container. 
+  """
+  Public
+}
+
+""""""
+enum prifinaProjectStatusEnum {
+  """first version"""
+  first
+
+  """ready for publishing"""
+  ready
+
+  """submitted to publishing"""
+  submitted
+
+  """in review"""
+  review
+
+  """clarifications needed"""
+  clarifications
+
+  """published"""
+  published
+
+  """version update"""
+  update
+}
+
+""""""
+enum prifiinaProjectTypeEnum {
+  """"""
+  App
+
+  """"""
+  Widget
+}
+
+""""""
+type FamilyEntity {
+  """"""
+  entityID: Int!
+
+  """"""
+  name: String
+
+  """"""
+  parentalControls: Boolean
+
+  """"""
+  members: [FamilyMember]
+}
+
+""""""
+type FamilyMember {
+  """"""
+  prifinaIndividual: individual
+
+  """"""
+  role: familyProfileRoleEnum
+}
+
+""""""
+enum familyProfileRoleEnum {
+  """Child"""
+  Child
+
+  """Young Adult"""
+  YA
+
+  """Adult"""
+  Adult
+}
+
+""""""
+type CommunityEntity {
+  """"""
+  entityID: Int!
+
+  """"""
+  name: String
+
+  """"""
+  members: [CommunityMember]
+}
+
+""""""
+type CommunityMember {
+  """"""
+  prifinaIndividual: individual
+
+  """"""
+  role: communityProfileRoleEnum
+}
+
+""""""
+enum communityProfileRoleEnum {
+  """member"""
+  member
+
+  """moderator"""
+  moderator
+
+  """admin"""
+  admin
+}
+
+""""""
+type prifiinaIndividualNotifications {
+  """"""
+  notification: prifinaNotification
+
+  """"""
+  readAt: String
+
+  """"""
+  status: prifiinaIndividualNotificationsStatusEnum
+}
+
+""""""
+type prifinaNotification {
+  """Sender of Notification"""
+  prifinaSender: individual
+
+  """Receiver of Notification"""
+  prifinaReceiver: individual
+
+  """"""
+  type: prifiinaNotificationTypeEnum
+
+  """"""
+  notificationType: prifiinaNotificationTypeCategoryEnum
+
+  """"""
+  createdAt: String
+
+  """JSON"""
+  msgBody: String
+
+  """"""
+  reports: [prifinaNotificationReport]
+
+  """"""
+  important: Boolean
+}
+
+""""""
+enum prifiinaNotificationTypeEnum {
+  """Dashboard"""
+  Dashboard
+
+  """Profile Cards"""
+  Profile_Cards
+
+  """Smart Search"""
+  Smart_Search
+
+  """Data Cloud"""
+  Data_Cloud
+
+  """News Muzzler"""
+  News_Muzzler
+}
+
+""""""
+enum prifiinaNotificationTypeCategoryEnum {
+  """Social"""
+  Social
+
+  """Settings"""
+  Settings
+
+  """Billing"""
+  Billing
+}
+
+""""""
+type prifinaNotificationReport {
+  """Reported Notification"""
+  prifinaNotificationType: prifinaNotification
+
+  """Reporter of Notification"""
+  prifinaReporter: individual
+
+  """"""
+  reportType: prifiinaNotificationReportTypeEnum
+
+  """"""
+  reportedAt: String
+
+  """"""
+  reportReason: String
+}
+
+""""""
+enum prifiinaNotificationReportTypeEnum {
+  """"""
+  OFFESNSIVE
+
+  """"""
+  MISCONDUCT
+}
+
+""""""
+enum prifiinaIndividualNotificationsStatusEnum {
+  """"""
+  RECEIVED
+
+  """"""
+  READ
+
+  """"""
+  DELETED
+}
